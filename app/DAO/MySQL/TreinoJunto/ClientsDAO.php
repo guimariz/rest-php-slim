@@ -18,7 +18,7 @@ class ClientsDAO extends Connection {
     return $clients;
   }
   
-  public function insertClients(ClientModel $client): void {
+  public function insertClient(ClientModel $client): void {
     $statement = $this->pdo
       ->prepare("
       INSERT INTO tbl_client 
@@ -54,6 +54,7 @@ class ClientsDAO extends Connection {
         'logradouro' => $client->getLogradouro(),
         'numero' => $client->getNumero(),
         'cpf' => $client->getCpf(),
+        'id' => $client->getId()
       ]);
   }
 

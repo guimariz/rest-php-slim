@@ -4,6 +4,8 @@ namespace App\Controllers;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use App\DAO\MySQL\TreinoJunto\ClientsDAO;
+use App\Models\MySQL\TreinoJunto\ClientModel;
+use Slim\Container;
 
 final class ClientsController {
   public function getClients(Request $request, Response $response, array $args): Response {
@@ -11,25 +13,21 @@ final class ClientsController {
     $clients = $clientsDAO->getAllClients();
     $response = $response->withJson($clients);
 
-    // $response = $response->withJson([
-    //   'message' => 'Hello world'
-    // ]);
-
     return $response;
   }
-  public function insertClients(Request $request, Response $response, array $args): Response {
+  public function insertClient(Request $request, Response $response, array $args): Response {
     $data = $request->getParsedBody();
     
-    $ClientsDAO = new ClientsDAO();
+    $clientsDAO = new ClientsDAO();
     $client = new ClientModel();
-    $client->setName($data['name']);
-    $client->setCep($data['cep']);
-    $client->setBairro($data['bairro']);
-    $client->setCidade($data['cidade']);
-    $client->setEstado($data['estado']);
-    $client->setLogradouro($data['logradouro']);
-    $client->setNumero($data['numero']);
-    $client->setCpf($data['cpf']);
+    $client->setName($data['name'])
+      ->setCep($data['cep'])
+      ->setBairro($data['bairro'])
+      ->setCidade($data['cidade'])
+      ->setEstado($data['estado'])
+      ->setLogradouro($data['logradouro'])
+      ->setNumero($data['numero'])
+      ->setCpf($data['cpf']);
     $clientsDAO->insertClient($client);
 
     $response = $response->withJson([
@@ -38,11 +36,38 @@ final class ClientsController {
     
     return $response;
   }
-  public function updateClients(Request $request, Response $response, array $args): Response  {
+  public function updateClient(Request $request, Response $response, array $args): Response  {
+    $data = $request->getParsedBody();
+
+    $clientsDAO = new ClientsDAO();
+    $client = new ClientModel();
+    $client->setName($data['name'])
+      ->setCep($data['cep'])
+      ->setBairro($data['bairro'])
+      ->setCidade($data['cidade'])
+      ->setEstado($data['estado'])
+      ->setLogradouro($data['logradouro'])
+      ->setNumero($data['numero'])
+      ->setCpf($data['cpf'])
+      ->setId($data['id']);
+    $clientsDAO->updateClient($client);
+
+    $response = $response->withJson([
+        'message' => 'Cliente alterado com sucesso!'
+    ]);
 
     return $response;
   }
-  public function deleteClients(Request $request, Response $response, array $args): Response  {
+  public function deleteClient(Request $request, Response $response, array $args): Response  {
+    $queryParams = $request->getQueryParams();
+
+    $clientsDAO = new ClientsDAO();
+    $id = (int)$queryParams['id'];
+    $clientsDAO->deleteClient($id);
+
+    $response = $response->withJson([
+        'message' => 'Cliente excluído com sucesso!'
+    ]);
 
     return $response;
   }

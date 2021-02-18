@@ -2,7 +2,7 @@
 
 namespace App\Models\MySQL\TreinoJunto;
 
-final class LojaModel {
+final class ClientModel {
 
   /**
    * @var int
@@ -54,6 +54,11 @@ final class LojaModel {
    */
   public function getId(): int {
     return $this->id;
+  }
+  
+  public function setId(int $id): ClientModel {
+    $this->id = $id;
+    return $this;
   }
   
    /**
