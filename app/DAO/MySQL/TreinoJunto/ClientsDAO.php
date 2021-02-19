@@ -61,7 +61,8 @@ class ClientsDAO extends Connection {
   public function deleteClient(int $id): void
   {
       $statement = $this->pdo
-          ->prepare("DELETE FROM tbl_client WHERE id = :id;
+          ->prepare("
+          DELETE FROM tbl_client WHERE id = :id;
           ");
       $statement->execute([
           'id' => $id
